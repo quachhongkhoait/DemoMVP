@@ -2,10 +2,6 @@ package com.example.demomvp.ui.main
 
 import com.example.demomvp.base.BasePresenter
 import com.example.demomvp.models.Food
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlin.coroutines.CoroutineContext
 
 interface MainContract {
     interface View {
