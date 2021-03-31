@@ -19,5 +19,6 @@ fun ImageView.loadFromUrl(url: String) {
     Glide.with(this.context.applicationContext)
         .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())
+        .skipMemoryCache(false)
         .into(this)
 }

@@ -17,37 +17,45 @@ class MainPresenter : MainContract.Presenter {
     override fun getFoods() {
         val thread = Thread {
             with(ApiService().httpGet(Constants.BASE_URL + "food/all")) {
-                val jsonObject = JSONObject(this)
-                Log.d("nnn", "getFoods: " + jsonObject.getInt("status"))
-                if (jsonObject.getInt("status") == 200) {
-                    val list = jsonObject.getJSONArray("data")
-                    for (it in 0 until list.length()) {
-                        data.add(
-                            Food(
-                                list.getJSONObject(it).getInt("id"),
-                                list.getJSONObject(it).getInt("categoryId"),
-                                list.getJSONObject(it).getInt("specialtiesId"),
-                                list.getJSONObject(it).getString("title"),
-                                list.getJSONObject(it).getString("thumbnail"),
-                                list.getJSONObject(it).getString("description"),
-                            )
-                        )
+                val handler = Handler(Looper.getMainLooper())
+                handler.post {
+                    val jsonObject = JSONObject(this)
+                    Log.d("nnn", "getFoods: " + jsonObject.getInt("status"))
+                    if (jsonObject.getInt("status") == 200) {
+                        val list = jsonObject.getJSONArray("data")
+                        for (it in 0 until list.length()) {
+                            list.getJSONObject(it).run {
+                                data.add(
+                                    Food(
+                                        getInt("id"),
+                                        getInt("categoryId"),
+                                        getInt("specialtiesId"),
+                                        getString("title"),
+                                        getString("thumbnail"),
+                                        getString("description")
+                                    )
+                                )
+                            }
+//                            data.add(
+//
+//                                Food(
+//                                    list.getJSONObject(it).getInt("id"),
+//                                    list.getJSONObject(it).getInt("categoryId"),
+//                                    list.getJSONObject(it).getInt("specialtiesId"),
+//                                    list.getJSONObject(it).getString("title"),
+//                                    list.getJSONObject(it).getString("thumbnail"),
+//                                    list.getJSONObject(it).getString("description"),
+//                                )
+//                            )
+                        }
+                        viewMain?.onSuccess(data)
+                    } else {
+                        viewMain?.onError(jsonObject.getString("message"))
                     }
-                    viewMain?.onSuccess(data)
-                } else {
-                    viewMain?.onError(jsonObject.getString("message"))
                 }
             }
         }
         thread.start()
-
-
-        val handler = Handler(Looper.getMainLooper())
-        handler.post {
-            thread {
-
-            }
-        }
     }
 
     override fun onStart() = getFoods()
