@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DemoMVP</string>
+    <string name="text_item_max">item max</string>
 </resources>

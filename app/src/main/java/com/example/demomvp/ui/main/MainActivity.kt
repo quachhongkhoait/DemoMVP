@@ -73,12 +73,16 @@ class MainActivity : BaseActivity(), MainContract.View, BaseAdapter.OnItemClickL
     }
 
     override fun onError(error: String) {
-        Log.d(TAG, "onError: $error")
+        progressBar.toGone()
+        swipeRefresh.toGone()
+        textViewError.toVisible()
+        textViewError.text = error
     }
 
     override fun onLoading() {
         progressBar.toVisible()
         swipeRefresh.toGone()
+        textViewError.toGone()
     }
 
     override fun onItemClick(item: Int) {
@@ -88,20 +92,18 @@ class MainActivity : BaseActivity(), MainContract.View, BaseAdapter.OnItemClickL
     private fun loadMoreData() {
         mainAdapter.addLoadingView()
         val start = mainAdapter.itemCount
-        val end = start + 9
+        var end = start + 10
         posLoad = data.size
-        if (dataAll.size - end <= 9) {
-            return
+        if (end >= dataAll.size) {
+            end = dataAll.size
+            mainAdapter.setMax()
         }
         Handler().postDelayed({
-            for (i in start..end) {
+            for (i in start until end) {
                 data.add(dataAll[i])
             }
             mainAdapter.removeLoadingView(posLoad)
             scrollListener.setLoaded()
-//            recyclerView.post {
-//                mainAdapter.notifyDataSetChanged()
-//            }
         }, 2000)
     }
 }

@@ -9,12 +9,5 @@ abstract class BaseHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView)
     companion object {
         protected val TAG = "BaseHolder"
     }
-
     abstract fun bindData(context: Context, listData: List<T>, position: Int)
-
-    open fun bindDataPayload(context: Context, data: T, position: Int) {}
-
-    open fun bindListData(context: Context, listData: List<T>) {
-
-    }
 }

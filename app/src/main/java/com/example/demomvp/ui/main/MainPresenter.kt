@@ -2,12 +2,10 @@ package com.example.demomvp.ui.main
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import com.example.demomvp.models.Food
 import com.example.demomvp.services.ApiService
 import com.example.demomvp.utils.Constants
 import org.json.JSONObject
-import kotlin.concurrent.thread
 
 
 class MainPresenter : MainContract.Presenter {
@@ -20,37 +18,25 @@ class MainPresenter : MainContract.Presenter {
                 val handler = Handler(Looper.getMainLooper())
                 handler.post {
                     val jsonObject = JSONObject(this)
-                    Log.d("nnn", "getFoods: " + jsonObject.getInt("status"))
-                    if (jsonObject.getInt("status") == 200) {
-                        val list = jsonObject.getJSONArray("data")
+                    if (jsonObject.getInt(Constants.GET_STATUS) == 200) {
+                        val list = jsonObject.getJSONArray(Constants.GET_DATA)
                         for (it in 0 until list.length()) {
                             list.getJSONObject(it).run {
                                 data.add(
                                     Food(
-                                        getInt("id"),
-                                        getInt("categoryId"),
-                                        getInt("specialtiesId"),
-                                        getString("title"),
-                                        getString("thumbnail"),
-                                        getString("description")
+                                        getInt(Constants.GET_ID),
+                                        getInt(Constants.GET_CATEGORYID),
+                                        getInt(Constants.GET_SPECIALTIESID),
+                                        getString(Constants.GET_TITLE),
+                                        getString(Constants.GET_THUMBNAIL),
+                                        getString(Constants.GET_DESCRIPTION)
                                     )
                                 )
                             }
-//                            data.add(
-//
-//                                Food(
-//                                    list.getJSONObject(it).getInt("id"),
-//                                    list.getJSONObject(it).getInt("categoryId"),
-//                                    list.getJSONObject(it).getInt("specialtiesId"),
-//                                    list.getJSONObject(it).getString("title"),
-//                                    list.getJSONObject(it).getString("thumbnail"),
-//                                    list.getJSONObject(it).getString("description"),
-//                                )
-//                            )
                         }
                         viewMain?.onSuccess(data)
                     } else {
-                        viewMain?.onError(jsonObject.getString("message"))
+                        viewMain?.onError(jsonObject.getString(Constants.GET_MESSAGE))
                     }
                 }
             }

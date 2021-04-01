@@ -1,5 +1,6 @@
 package com.example.demomvp.services
 
+import com.example.demomvp.utils.Constants
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -12,7 +13,7 @@ class ApiService {
         val httpURLConnection = url.openConnection() as HttpURLConnection
         httpURLConnection.connectTimeout = 15000
         httpURLConnection.readTimeout = 15000
-        httpURLConnection.requestMethod = "GET"
+        httpURLConnection.requestMethod = Constants.METHOD_GET
         httpURLConnection.doOutput = true
         httpURLConnection.connect()
 
