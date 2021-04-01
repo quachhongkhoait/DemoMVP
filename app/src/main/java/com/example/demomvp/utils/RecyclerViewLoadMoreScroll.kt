@@ -30,17 +30,6 @@ class RecyclerViewLoadMoreScroll : RecyclerView.OnScrollListener {
         this.mLayoutManager = layoutManager
     }
 
-    constructor(layoutManager:GridLayoutManager) {
-        this.mLayoutManager = layoutManager
-        visibleThreshold *= layoutManager.spanCount
-    }
-
-    constructor(layoutManager:StaggeredGridLayoutManager) {
-        this.mLayoutManager = layoutManager
-        visibleThreshold *= layoutManager.spanCount
-    }
-
-
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
